@@ -77,6 +77,20 @@ green and answers all three questions:
 | **A2** | Does `Prefer:` back off when it collides with `Conflicts`? | **Yes.** In `cpu_build`, where prjconf prefers the CPU flavor, `python-fakerocmapp` still got `python-faketorch-rocm` — an explicit-name `BuildRequires` wins, and the ambiguous transitive capability resolves to the flavor already in the build set. |
 | **A3** | Does per-repository `Prefer:` select the flavor? | **Yes.** The name-free consumers got the CPU flavor in `cpu_build` and the ROCm flavor in `rocm_build`, with no spec change. |
 
+| **A4** | What if there is no `Prefer:` at all? | **Everything breaks.** Every name-free consumer goes unresolvable: `have choice for python3dist(faketorch): python-faketorch python-faketorch-rocm`. OBS refuses to guess. |
+
+A4 is worth dwelling on, because it inverts between the two solvers:
+
+- **OBS treats ambiguity as a hard error.** It names both candidates and stops.
+- **libsolv treats ambiguity as a heuristic.** It picks one, silently.
+
+So the loud failure is on the build side and the silent wrong answer is on the
+install side -- which is exactly backwards from where you would want them. It
+also explains why stripping the identity looks attractive in the first place:
+it is the cheapest way to make "have choice" go away if you do not know that
+`Prefer:` exists. Under proposal B, `Prefer:` is load-bearing rather than a
+tuning knob -- without it, all 13 Base torch consumers would fail to build.
+
 A2 is the one that matters most: **proposal B works at build time.** The
 expander does not blindly walk `Prefer:` into a conflict.
 

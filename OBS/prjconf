@@ -8,6 +8,8 @@
 # Toggle these while watching the build results; that is the experiment.
 
 
+# A4 showed these are load-bearing, not a tuning knob: comment them out and
+# every name-free consumer goes unresolvable with "have choice".
 %if "%_repository" == "rocm_build"
 Prefer: python-faketorch-rocm
 %else
