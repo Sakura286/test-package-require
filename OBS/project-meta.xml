@@ -1,0 +1,17 @@
+<project name="home:Sakura286:test_package">
+  <title>Dependency-resolution test rig</title>
+  <description>Minimal stand-ins for the ROCm/torch flavor-split dependency
+  questions.  See https://github.com/Sakura286/test-package-require</description>
+  <person userid="Sakura286" role="maintainer"/>
+  <!-- Two repositories over the same target, differing only in which flavor
+       the prjconf prefers.  x86_64 only: the questions under test are about
+       dependency semantics, not architecture. -->
+  <repository name="cpu_build" rebuild="local" block="local">
+    <path project="openruyi" repository="x86_64"/>
+    <arch>x86_64</arch>
+  </repository>
+  <repository name="rocm_build" rebuild="local" block="local">
+    <path project="openruyi" repository="x86_64"/>
+    <arch>x86_64</arch>
+  </repository>
+</project>

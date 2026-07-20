@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: (C) 2026 Institute of Software, Chinese Academy of Sciences (ISCAS)
+# SPDX-FileCopyrightText: (C) 2026 openRuyi Project Contributors
+# SPDX-FileContributor: CHEN Xuan <chenxuan@iscas.ac.cn>
+#
+# SPDX-License-Identifier: MulanPSL-2.0
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "faketorch"
+version = "2.13.0"
+description = "Dependency-resolution test stand-in for torch"
+
+[tool.setuptools]
+packages = ["faketorch"]

@@ -1,0 +1,14 @@
+# Project config for home:Sakura286:test_package
+#
+# The whole point of the two repositories is that a spec may not name a flavor
+# (openRuyi requires python3dist(...) rather than package names), so the flavor
+# has to be chosen by the build context instead.  This is the OBS-side
+# equivalent of pip's --index-url.
+#
+# Toggle these while watching the build results; that is the experiment.
+
+%if "%_repository" == "rocm_build"
+Prefer: python-faketorch-rocm
+%else
+Prefer: python-faketorch
+%endif

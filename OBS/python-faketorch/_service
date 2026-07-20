@@ -1,0 +1,9 @@
+<services>
+  <service name="obs_scm">
+    <param name="scm">git</param>
+    <param name="url">https://github.com/Sakura286/test-package-require</param>
+    <param name="revision">main</param>
+    <param name="exclude">*</param>
+    <param name="extract">SPECS/python-faketorch/*</param>
+  </service>
+</services>
