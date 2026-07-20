@@ -7,6 +7,15 @@
 #
 # Toggle these while watching the build results; that is the experiment.
 
+# Semantics variant for the whole project.  Every build-time question needs the
+# "identity" state -- with the rocm flavor stripped of python3dist(faketorch)
+# there is only ever one provider, so Prefer: has nothing to decide and the
+# expander just reports the Conflicts.  Comment this out to reproduce today's
+# production semantics instead.
+Macros:
+%_without_distexclude 1
+:Macros
+
 %if "%_repository" == "rocm_build"
 Prefer: python-faketorch-rocm
 %else
