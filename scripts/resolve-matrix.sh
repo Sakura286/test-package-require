@@ -45,6 +45,15 @@ run() {
 	return 0
 }
 
+# build-local.sh leaves a faketorch installed as the consumers' build
+# dependency.  An installed provider always wins over anything in a repo, so
+# every scenario below would silently report that flavor regardless of the
+# variant under test.  Start clean or the whole matrix is a lie.
+if rpm -qa | grep -q '^python-faketorch'; then
+	echo "removing the installed faketorch first (it would win every scenario)" >&2
+	sudo dnf remove -y 'python-faketorch*' >/dev/null 2>&1
+fi
+
 echo "scenario                           verdict     detail"
 echo "-------------------------------------------------------------------------"
 

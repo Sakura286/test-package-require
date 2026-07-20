@@ -96,6 +96,27 @@ What that says:
    simply not expressible under a name-free convention; it can only be shifted,
    never stated.
 
+## Install-time tiebreak rules
+
+`Prefer:` is a prjconf directive. It is **not recorded in the RPM** — a
+name-free consumer built against the ROCm flavor still ships a bare
+`Requires: python3dist(faketorch)`, so dnf on the target machine knows nothing
+about what the build preferred. Measured, in decreasing order of strength:
+
+| Rule | Effect |
+|---|---|
+| An **already-installed** provider | Wins. A ROCm machine pulling in a consumer keeps ROCm and installs nothing extra. |
+| A provider **named explicitly in the same transaction** | Wins. |
+| **Repo priority** (`priority=`, lower number first) | Wins. Putting the ROCm flavor in a lower-priority repo pins the CPU flavor as the default, and vice versa. |
+| A **higher version** | Does *not* win. The ROCm flavor at 2.14.0 still lost to the CPU flavor at 2.13.0. |
+| Otherwise | The CPU flavor. Not established whether the rule is alphabetical or shortest-name; both happen to favour `python-torch` over `python-torch-rocm`, so it is stable in practice but implicit — do not build on it. |
+
+The good news is the top two rules: a machine that has deliberately installed
+the ROCm flavor keeps getting it, with no shim and no per-package forks. Repo
+priority is the lever for everything else. The bad news is the bottom row: a
+ROCm *application* installed onto a clean machine still drags in the CPU flavor,
+because nothing it ships says otherwise.
+
 ## Still open (needs OBS)
 
 The build-time half — how the OBS expander behaves with `Prefer:` and

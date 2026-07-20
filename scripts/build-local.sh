@@ -47,7 +47,10 @@ publish() {
 	local dir="$1" name="$2"
 	find "$dir" -name '*.rpm' -exec mv -t "$dir" {} + 2>/dev/null || true
 	find "$dir" -mindepth 1 -type d -exec rm -rf {} + 2>/dev/null || true
-	createrepo_c --quiet --update "$dir"
+	# Full regen, not --update: --update leaves metadata for RPMs that have been
+	# deleted, and dnf then fails to download a package that no longer exists.
+	rm -rf "$dir/repodata"
+	createrepo_c --quiet "$dir"
 	sudo tee "/etc/yum.repos.d/faketorch-$name.repo" >/dev/null <<-EOF
 		[faketorch-$name]
 		name=faketorch test rig ($name)
