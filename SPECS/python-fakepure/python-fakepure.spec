@@ -28,6 +28,8 @@ Source1:        __init__.py
 
 BuildRequires:  python3-devel
 BuildRequires:  pyproject-rpm-macros
+# %%pyproject_wheel shells out to pip; it is not pulled in by python3-devel.
+BuildRequires:  python3dist(pip)
 
 %description
 Test stand-in for a Base package that requires torch through

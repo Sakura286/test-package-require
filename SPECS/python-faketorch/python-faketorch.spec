@@ -66,6 +66,8 @@ BuildRequires:  python3-devel
 BuildRequires:  pyproject-rpm-macros
 # No %%generate_buildrequires here, so the PEP 517 backend must be named.
 BuildRequires:  python3dist(setuptools)
+# %%pyproject_wheel shells out to pip; it is not pulled in by python3-devel.
+BuildRequires:  python3dist(pip)
 
 %if %{with rocm}
 %if %{with distexclude}
